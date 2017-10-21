@@ -9,7 +9,7 @@ void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	auto ControlledTank = GetControllerTank();
+	auto ControlledTank = GetControlledTank();
 
 	if (!ControlledTank)
 	{
@@ -20,7 +20,6 @@ void ATankPlayerController::BeginPlay()
 		UE_LOG(LogTemp, Warning, TEXT("PlayerController possesing %s"), *(ControlledTank->GetName()));
 	}
 	
-	UE_LOG(LogTemp, Warning, TEXT("PlayerController Begin Play"));
 }
 
 // Called every frame
@@ -30,7 +29,7 @@ void ATankPlayerController::Tick(float DeltaTime)
 	AimTowardsCrosshair();
 }
 
-ATank* ATankPlayerController::GetControllerTank() const 
+ATank* ATankPlayerController::GetControlledTank() const 
 {
 	return Cast<ATank>(GetPawn());
 	
@@ -39,13 +38,13 @@ ATank* ATankPlayerController::GetControllerTank() const
 
 void ATankPlayerController::AimTowardsCrosshair()
 {
-	if (!GetControllerTank()) { return; }
+	if (!GetControlledTank()) { return; }
 
 	FVector HitLocation;//out parameter
 
 	if (GetSightRayHitLocation(HitLocation)) // has "side-efect", is going to line trace
 	{
-		GetControllerTank()->AimAt(HitLocation);
+		GetControlledTank()->AimAt(HitLocation);
 
 	}
 }
@@ -56,7 +55,7 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& HitLocation) const
 	//Find the crosshair position in pixel coordinents
 	int32 ViewportSizeX, ViewportSizeY;
 	GetViewportSize(ViewportSizeX, ViewportSizeY);
-	auto ScreenLocation = FVector2D(ViewportSizeX * CrosshairXLocation, ViewportSizeX * CrosshairYLocation);
+	auto ScreenLocation = FVector2D(ViewportSizeX * CrosshairXLocation, ViewportSizeY * CrosshairYLocation);
 
 
 	// de-project the screen position of the crosshair to a world direction
@@ -93,6 +92,7 @@ bool ATankPlayerController::GetLookVectorHitLocation(FVector LookDirection, FVec
 bool ATankPlayerController::GetLookDirection(FVector2D ScreenLocation, FVector& LookDirection) const
 {
 	FVector CameraWorldLocation; // to be discarded
+
 	return DeprojectScreenPositionToWorld(
 		ScreenLocation.X,
 		ScreenLocation.Y,
