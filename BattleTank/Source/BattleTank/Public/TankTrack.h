@@ -18,5 +18,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = Input)
 	void SetThrottle(float Throttle);
 	
+	// This is max force per track in Newtens
+	UPROPERTY(EditDefaultsOnly)
+	float TrackMaxDrivingForce = 400000; // assume 40 tone tank and 1g acceleration
 	
 };
