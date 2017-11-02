@@ -28,7 +28,7 @@ public:
 	void IntendTurnRight(float Throw);
 
 	UFUNCTION(BlueprintCallable, Category = Input)
-		void IntendTurnLeft(float Throw);
+	void IntendTurnLeft(float Throw);
 
 	//TODO check best protection for this method
 	virtual void RequestDirectMove(const FVector& MoveVelocity, bool bForceMaxSpeed) override;
