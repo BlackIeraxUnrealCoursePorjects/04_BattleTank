@@ -5,7 +5,6 @@
 #include "BattleTank.h"
 #include "TankBarrel.h"
 #include "Projectile.h"
-#include "TankAimingComponent.h"
 
 // Sets default values
 ATank::ATank()
@@ -19,17 +18,9 @@ void ATank::BeginPlay()
 {
 	//Super
 	Super::BeginPlay(); // Needed for BP begin play to run
-	auto TankName = GetName();
 
-	TankAimingComponent = FindComponentByClass<UTankAimingComponent>();
 }
 
-void ATank::AimAt(FVector HitLocation) 
-{
-	if (!ensure(TankAimingComponent)) { return; }
-	TankAimingComponent->AimAt(HitLocation, LaunchSpeed);
-	
-}
 
 void ATank::Fire()
 {
@@ -38,7 +29,7 @@ void ATank::Fire()
 
 	if (isReloaded)
 	{
-		// spawn a projectile at the socket location
+		// Spawn a projectile at the socket location on the barrel
 		auto Projectile = GetWorld()->SpawnActor<AProjectile>(
 			ProjectileBlueprint,
 			Barrel->GetSocketLocation(FName("Projectile")),
@@ -48,5 +39,4 @@ void ATank::Fire()
 		Projectile->LaunchProjectile(LaunchSpeed);
 		LastFireTime = FPlatformTime::Seconds();
 	}
-	
 }
