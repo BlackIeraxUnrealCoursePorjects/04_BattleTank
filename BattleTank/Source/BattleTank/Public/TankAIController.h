@@ -13,13 +13,13 @@ UCLASS()
 class BATTLETANK_API ATankAIController : public AAIController
 {
 	GENERATED_BODY()
+protected:
+	//how close can the tank go to the player before fires
+	UPROPERTY(EditAnywhere, Category = "Setup") // Consider EditDefaultsOnly
+	float AcceptanceRadius = 8000;
+
 private:
-
 		virtual void BeginPlay() override;
-		
 		virtual void Tick(float DeltaTime) override;
-
-		//how close can the tank go to the player before fires
-		float AcceptanceRadius = 300;
 
 };
